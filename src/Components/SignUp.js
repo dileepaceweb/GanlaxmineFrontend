@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { auth, googleProvider, facebookProvider, signInWithPopup } from './fireBaseConfig';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -7,13 +8,17 @@ const SignUp = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Implement login logic here
+    // Implement email/password login logic here
     console.log('Login attempt with:', { email, password, rememberMe });
   };
 
-  const handleSocialLogin = (platform) => {
-    // Implement social login logic here
-    console.log(`Attempting to login with ${platform}`);
+  const handleSocialLogin = async (provider) => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log(`Logged in with ${provider.providerId}:`, result.user);
+    } catch (error) {
+      console.error(`Error logging in with ${provider.providerId}:`, error);
+    }
   };
 
   return (
@@ -49,13 +54,13 @@ const SignUp = () => {
           />
           <label htmlFor="rememberMe">Remember me</label>
         </div>
-        <button type="submit" style={styles.loginButton}>SignUp</button>
+        <button type="submit" style={styles.loginButton}>Sign Up</button>
       </form>
       <p style={styles.divider}>or continue with</p>
       <div style={styles.socialButtons}>
-        <button onClick={() => handleSocialLogin('Google')} style={styles.socialButton}>G</button>
-        <button onClick={() => handleSocialLogin('Apple')} style={styles.socialButton}>A</button>
-        <button onClick={() => handleSocialLogin('Facebook')} style={styles.socialButton}>f</button>
+        <button onClick={() => handleSocialLogin(googleProvider)} style={styles.socialButton}>G</button>
+        <button onClick={() => handleSocialLogin(facebookProvider)} style={styles.socialButton}>f</button>
+        <button onClick={() => console.log('Apple login not implemented yet')} style={styles.socialButton}>A</button>
       </div>
     </div>
   );
