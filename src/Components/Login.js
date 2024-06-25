@@ -1,21 +1,56 @@
 import React, { useState } from 'react';
 import { auth, googleProvider, facebookProvider, signInWithPopup } from './fireBaseConfig';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Implement email/password login logic here
-    console.log('Login attempt with:', { email, password, rememberMe });
+    try {
+      console.log("Attempting to login with:", { email, password, rememberMe });
+      const response = await axios.post('http://localhost:5000/auth/login', {
+        email,
+        password,
+        rememberMe,
+      });
+
+      console.log('Response from server:', response);
+
+      if (response.data.success) {
+        console.log('Login successful:', response.data);
+        // Redirect to the welcome page
+        navigate('/welcome');
+      } else {
+        console.error('Login failed:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   const handleSocialLogin = async (provider) => {
     try {
       const result = await signInWithPopup(auth, provider);
       console.log(`Logged in with ${provider.providerId}:`, result.user);
+      // Assuming the backend can handle social login token
+      const token = await result.user.getIdToken();
+      const response = await axios.post('http://localhost:5000/auth/social-login', {
+        token,
+        provider: provider.providerId,
+      });
+
+      if (response.data.success) {
+        console.log('Social login successful:', response.data);
+        // Redirect to the welcome page
+        navigate('/welcome');
+      } else {
+        console.error('Social login failed:', response.data.message);
+      }
     } catch (error) {
       console.error(`Error logging in with ${provider.providerId}:`, error);
     }
@@ -133,9 +168,3 @@ const styles = {
 };
 
 export default Login;
-
-
-
-
-
-

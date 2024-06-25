@@ -23,3 +23,26 @@ export { auth, googleProvider, facebookProvider, signInWithPopup };
 
 
 
+// import { initializeApp } from 'firebase/app';
+// import { getAuth, GoogleAuthProvider, FacebookAuthProvider, OAuthProvider, signInWithPopup, signInWithCredential } from 'firebase/auth';
+
+// // Your web app's Firebase configuration
+// const firebaseConfig = {
+//   apiKey: "YOUR_API_KEY",
+//   authDomain: "YOUR_AUTH_DOMAIN",
+//   projectId: "YOUR_PROJECT_ID",
+//   storageBucket: "YOUR_STORAGE_BUCKET",
+//   messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+//   appId: "YOUR_APP_ID"
+// };
+
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const auth = getAuth(app);
+
+// // Providers
+// const googleProvider = new GoogleAuthProvider();
+// const facebookProvider = new FacebookAuthProvider();
+// const appleProvider = new OAuthProvider('apple.com');
+
+// export { auth, googleProvider, facebookProvider, appleProvider, signInWithPopup, signInWithCredential };
